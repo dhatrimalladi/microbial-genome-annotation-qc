@@ -1,2 +1,69 @@
 # microbial-genome-annotation-qc
 Python-based quality control of bacterial genome FASTA sequences and GFF3 annotations.
+from pathlib import Path
+
+
+def read_fasta(fasta_file):
+    """Read a FASTA file and return sequences as a dictionary."""
+    sequences = {}
+    current_id = None
+    current_sequence = []
+
+    with open(fasta_file, "r") as file:
+        for line in file:
+            line = line.strip()
+
+            if not line:
+                continue
+
+            if line.startswith(">"):
+                if current_id is not None:
+                    sequences[current_id] = "".join(current_sequence)
+
+                current_id = line[1:].split()[0]
+                current_sequence = []
+            else:
+                current_sequence.append(line)
+
+        if current_id is not None:
+            sequences[current_id] = "".join(current_sequence)
+
+    return sequences
+
+
+def calculate_gc(sequence):
+    """Calculate GC percentage for a DNA sequence."""
+    sequence = sequence.upper()
+
+    gc_count = sequence.count("G") + sequence.count("C")
+
+    if len(sequence) == 0:
+        return 0.0
+
+    return (gc_count / len(sequence)) * 100
+
+
+def genome_statistics(fasta_file):
+    """Calculate basic statistics for a FASTA genome."""
+    sequences = read_fasta(fasta_file)
+
+    total_length = sum(len(seq) for seq in sequences.values())
+
+    if total_length == 0:
+        gc_content = 0.0
+    else:
+        total_gc = sum(
+            calculate_gc(seq) * len(seq) / 100
+            for seq in sequences.values()
+        )
+        gc_content = (total_gc / total_length) * 100
+
+    return {
+        "number_of_contigs": len(sequences),
+        "genome_length": total_length,
+        "gc_content": round(gc_content, 2),
+    }
+
+
+if __name__ == "__main__":
+    print("FASTA QC module loaded successfully.")
