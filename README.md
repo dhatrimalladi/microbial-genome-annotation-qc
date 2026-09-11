@@ -66,4 +66,7 @@ def genome_statistics(fasta_file):
 
 
 if __name__ == "__main__":
-    print("FASTA QC module loaded successfully.")
+    import sys
+    if len(sys.argv) > 1:
+        stats = genome_statistics(sys.argv[1])
+        print(stats)
