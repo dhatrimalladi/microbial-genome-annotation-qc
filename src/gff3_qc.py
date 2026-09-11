@@ -1,4 +1,4 @@
-def from pathlib import Path
+from pathlib import Path
 import sys
 
 def parse_gff3(gff3_file):
