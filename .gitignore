@@ -1,3 +1,5 @@
 __pycache__/
 .pytest_cache/
 genome_report.json
+real_data/
+*.save

@@ -1,149 +1,94 @@
-Microbial Genome Annotation QC
+# Microbial Genome Annotation QC
 
-A Python-based quality control toolkit for bacterial genome FASTA sequences and GFF3 annotations.
+A Python-based quality control tool for bacterial genome FASTA sequences and GFF3 annotations.
 
-This project demonstrates practical skills in bioinformatics data validation, genome assembly QC, structured biological data processing, automated testing, and reproducible workflows.
+This project demonstrates practical bioinformatics data validation using Python, automated testing, and real NCBI RefSeq genomic data.
 
-Project Overview
+## Project Overview
 
-The toolkit performs basic quality control on microbial genome sequence and annotation files.
+The goal of this project is to perform basic quality control on microbial genome assemblies and their corresponding genome annotations.
 
-It currently supports:
+The workflow includes:
 
-FASTA sequence parsing
-DNA sequence validation
-Genome length calculation
-GC content calculation
-N50 assembly statistic
-GFF3 feature parsing
-GFF3 structure validation
-Coordinate validation
-Duplicate feature ID detection
-Automated unit testing with pytest
-FASTA Quality Control
+- FASTA sequence parsing
+- DNA sequence validation
+- GC-content calculation
+- Genome length calculation
+- N50 calculation
+- GFF3 feature counting
+- GFF3 structure validation
+- Coordinate validation
+- Feature ID validation
+- Duplicate feature ID detection
+- Handling of biological annotation exceptions
+- JSON genome QC reporting
+- Automated testing with pytest
 
-The FASTA QC module (src/fasta_qc.py) provides:
+## Testing
 
-Sequence Parsing
+The project uses pytest for automated testing.
 
-Reads FASTA files and stores sequences by contig identifier.
+Run:
 
-Sequence Validation
+    PYTHONPATH=. pytest
 
-Checks whether DNA sequences contain only valid nucleotide characters:
+Current result:
 
-A, T, G, C
+    10 passed
 
-Invalid characters are reported for further review.
+## Real NCBI RefSeq Dataset
 
-Genome Statistics
+The project was tested against the NCBI RefSeq genome:
 
-The toolkit calculates:
+**Organism:** *Escherichia coli* K-12 MG1655  
+**Assembly:** GCF_000005845.2  
+**Assembly level:** Complete Genome
 
-Number of contigs
-Total genome length
-GC content
-N50
+### FASTA QC
 
-For the example genome:
+    Number of contigs: 1
+    Genome length: 4,641,652 bp
+    GC content: 50.79%
+    N50: 4,641,652 bp
 
-Number of contigs: 2
-Genome length: 87 bp
-GC content: 49.43%
-N50: 44 bp
-GFF3 Quality Control
+### GFF3 QC
 
-The GFF3 QC module (src/gff3_qc.py) provides:
+    Total features: 9,523
+    is_valid: True
+    errors: []
 
-Feature Parsing
+The GFF3 validator handles biological annotation cases such as pseudogene-related duplicate IDs and CDS features with exception=ribosomal slippage.
 
-Counts annotated feature types such as:
+## JSON Reporting
 
-gene
-CDS
-Structure Validation
+The FASTA QC module can save genome statistics as a JSON report.
 
-Checks that GFF3 records contain the required 9 columns.
+Example:
 
-Coordinate Validation
+    {
+        "number_of_contigs": 2,
+        "genome_length": 87,
+        "gc_content": 49.43,
+        "n50": 44
+    }
 
-Checks that feature start coordinates do not occur after end coordinates.
+## Tools and Technologies
 
-Feature ID Validation
+- Python
+- pytest
+- FASTA
+- GFF3
+- JSON
+- Git
+- GitHub
+- NCBI RefSeq
+- NCBI Datasets CLI
 
-Detects duplicate feature IDs within the annotation file.
+## Future Improvements
 
-Project Structure
-microbial-genome-annotation-qc/
-├── src/
-│   ├── data/
-│   │   ├── example_annotation.gff3
-│   │   ├── example_genome.fasta
-│   │   ├── invalid_annotation.gff3
-│   │   └── duplicate_ids.gff3
-│   ├── __init__.py
-│   ├── fasta_qc.py
-│   └── gff3_qc.py
-├── tests/
-│   ├── test_fasta_qc.py
-│   └── test_gff3_qc.py
-├── .gitignore
-└── README.md
-Installation
-
-Clone the repository:
-
-git clone https://github.com/dhatrimalladi/microbial-genome-annotation-qc.git
-cd microbial-genome-annotation-qc
-
-Install pytest:
-
-pip install pytest
-Running the Tests
-
-Run the complete test suite:
-
-python -m pytest
-
-Current test status:
-
-8 passed
-
-The tests cover FASTA parsing, sequence validation, genome statistics, GFF3 parsing, coordinate validation, and duplicate feature ID detection.
-
-Running the Tools
-FASTA QC
-python src/fasta_qc.py src/data/example_genome.fasta
-GFF3 QC
-python src/gff3_qc.py src/data/example_annotation.gff3
-
-The repository also includes intentionally invalid GFF3 files used to test validation logic.
-
-Why This Project?
-
-This project was developed to build practical experience with biological data quality control and structured annotation data.
-
-It combines:
-
-Biology and microbiology knowledge
-Python programming
-Data validation
-Scientific data processing
-Automated testing
-Git and GitHub
-Reproducible analysis workflows
-
-The goal is to demonstrate how biological datasets can be parsed, validated, tested, and prepared for downstream analysis.
-
-Future Improvements
-
-Planned improvements include:
-
-More comprehensive GFF3 validation
-Required attribute checks
-Additional FASTA QC metrics
-CSV/JSON report generation
-Command-line options
-Integration with public biological databases
-Processing larger real-world microbial genome datasets
-Expanded automated test coverage
+- More comprehensive GFF3 validation
+- Parent-child relationship validation
+- FASTA/GFF3 sequence ID consistency checks
+- Additional genome assembly statistics
+- CSV/JSON summary reports
+- Support for multiple microbial genomes

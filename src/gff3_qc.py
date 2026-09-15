@@ -29,7 +29,7 @@ def parse_gff3(gff3_file):
 def validate_gff3(gff3_file):
     """Validate basic GFF3 structure, coordinates, and feature IDs."""
     errors = []
-    feature_ids = set()
+    feature_ids = {}
 
     with open(gff3_file, "r") as file:
         for line_number, line in enumerate(file, start=1):
@@ -64,19 +64,50 @@ def validate_gff3(gff3_file):
                     f"Line {line_number}: start coordinate is greater than end"
                 )
 
-            if "ID=" not in attributes:
+            attribute_dict = {}
+
+            for attribute in attributes.split(";"):
+                if "=" in attribute:
+                    key, value = attribute.split("=", 1)
+                    attribute_dict[key] = value
+
+            if "ID" not in attribute_dict:
                 errors.append(
                     f"Line {line_number}: missing feature ID"
                 )
             else:
-                feature_id = attributes.split("ID=", 1)[1].split(";", 1)[0]
+                feature_id = attribute_dict["ID"]
+
+                is_pseudo = (
+                    attribute_dict.get("pseudo") == "true"
+                )
+
+                has_ribosomal_slippage = (
+                    attribute_dict.get("exception")
+                    == "ribosomal slippage"
+                )
 
                 if feature_id in feature_ids:
-                    errors.append(
-                        f"Line {line_number}: duplicate feature ID '{feature_id}'"
+                    previous_is_pseudo, previous_has_slippage = (
+                        feature_ids[feature_id]
                     )
+
+                    if not (
+                        (is_pseudo and previous_is_pseudo)
+                        or (
+                            has_ribosomal_slippage
+                            and previous_has_slippage
+                        )
+                    ):
+                        errors.append(
+                            f"Line {line_number}: duplicate feature ID "
+                            f"'{feature_id}'"
+                        )
                 else:
-                    feature_ids.add(feature_id)
+                    feature_ids[feature_id] = (
+                        is_pseudo,
+                        has_ribosomal_slippage
+                    )
 
     return {
         "is_valid": len(errors) == 0,
