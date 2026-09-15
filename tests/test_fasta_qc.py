@@ -20,6 +20,7 @@ def test_genome_statistics():
     assert result["number_of_contigs"] == 2
     assert result["genome_length"] == 87
     assert result["gc_content"] == 49.43
+    assert result["n50"] == 44
 def test_validate_sequence():
     valid_result = validate_sequence("ATGCATGC")
     assert valid_result["is_valid"] is True

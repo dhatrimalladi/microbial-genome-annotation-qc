@@ -67,10 +67,27 @@ def genome_statistics(fasta_file):
         )
         gc_content = (total_gc / total_length) * 100
 
+    contig_lengths = sorted(
+        (len(seq) for seq in sequences.values()),
+        reverse=True
+    )
+
+    half_genome = total_length / 2
+    cumulative_length = 0
+    n50 = 0
+
+    for length in contig_lengths:
+        cumulative_length += length
+
+        if cumulative_length >= half_genome:
+            n50 = length
+            break
+
     return {
         "number_of_contigs": len(sequences),
         "genome_length": total_length,
         "gc_content": round(gc_content, 2),
+        "n50": n50,
     }
 
 
