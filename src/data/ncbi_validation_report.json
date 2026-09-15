@@ -1,0 +1,33 @@
+{
+    "taxonomy_id": 511145,
+    "record_count": 5,
+    "matched_records": 5,
+    "unmatched_records": 0,
+    "results": [
+        {
+            "gene_symbol": "thrL",
+            "ncbi_match": true,
+            "gene_id": "944742"
+        },
+        {
+            "gene_symbol": "thrA",
+            "ncbi_match": true,
+            "gene_id": "945803"
+        },
+        {
+            "gene_symbol": "thrB",
+            "ncbi_match": true,
+            "gene_id": "947498"
+        },
+        {
+            "gene_symbol": "thrC",
+            "ncbi_match": true,
+            "gene_id": "945198"
+        },
+        {
+            "gene_symbol": "yaaX",
+            "ncbi_match": true,
+            "gene_id": "944747"
+        }
+    ]
+}
