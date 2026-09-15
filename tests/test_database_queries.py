@@ -3,6 +3,7 @@ from src.database_queries import (
     get_all_genes,
     get_gene_by_symbol,
     count_genes,
+    get_cds_for_gene,
 )
 
 
@@ -11,9 +12,21 @@ def create_test_database(tmp_path):
 
     connection = create_database(database_file)
 
+    from src.annotation_database import (
+        create_annotation_table,
+        load_gff3_annotations,
+    )
+
+    create_annotation_table(connection)
+
     load_genes_from_csv(
         connection,
         "src/data/curated_genes.csv",
+    )
+
+    load_gff3_annotations(
+        connection,
+        "src/data/example_annotation.gff3",
     )
 
     connection.close()
@@ -58,3 +71,30 @@ def test_get_all_genes(tmp_path):
 
     assert len(result) == 5
     assert result[0][1] == "thrL"
+
+
+def test_get_cds_for_gene(tmp_path):
+    database_file = create_test_database(tmp_path)
+
+    result = get_cds_for_gene(
+        database_file,
+        "thrL",
+    )
+
+    assert len(result) == 2
+    assert result[0][0] == "cds1"
+    assert result[0][1] == "contig_1"
+    assert result[0][2] == 3
+    assert result[0][3] == 15
+    assert result[0][4] == "+"
+
+
+def test_get_cds_for_gene_without_cds(tmp_path):
+    database_file = create_test_database(tmp_path)
+
+    result = get_cds_for_gene(
+        database_file,
+        "thrA",
+    )
+
+    assert result == []
