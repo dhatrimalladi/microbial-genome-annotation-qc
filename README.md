@@ -214,7 +214,7 @@ Run:
 
 Current result:
 
-    23 passed
+    33 passed
 
 The tests cover:
 
@@ -255,13 +255,15 @@ The GFF3 validator handles biological annotation cases such as pseudogene-relate
 
 ## NCBI Gene API Integration
 
-The project includes a Python module for retrieving structured gene information from the NCBI Gene database using the NCBI E-utilities API.
+The project includes a Python workflow for retrieving and validating structured gene information from the NCBI Gene database using the NCBI E-utilities API.
+
+### API Retrieval Workflow
 
 The workflow:
 
 1. Search NCBI Gene using a gene symbol and organism.
-2. Retrieve multiple Gene records in a single ESummary request.
-3. Extract structured fields including NCBI Gene ID, gene symbol, gene description, organism, NCBI Taxonomy ID, chromosome accession, genomic coordinates, and gene summary.
+2. Retrieve multiple candidate Gene records in a single ESummary request.
+3. Extract structured fields including NCBI Gene ID, gene symbol, description, organism, NCBI Taxonomy ID, chromosome accession, genomic coordinates, and gene summary.
 4. Filter candidate records using NCBI Taxonomy ID to resolve organism-specific matches.
 
 Example:
@@ -279,7 +281,53 @@ Example result:
     Chromosome accession: NC_000913.3
     Coordinates: 336-2798
 
-This demonstrates API-based biological data retrieval, structured record handling, and entity disambiguation using a controlled taxonomy identifier.
+### Curated Gene Validation
+
+The project also validates curated gene records against NCBI Gene.
+
+Workflow:
+
+    curated_genes.csv
+          |
+          v
+    Extract gene symbols
+          |
+          v
+    NCBI Gene search
+          |
+          v
+    Batch ESummary retrieval
+          |
+          v
+    Taxonomy ID filtering
+          |
+          v
+    Curated record validation
+          |
+          v
+    JSON validation report
+
+Example:
+
+    python -m src.ncbi_curation src/data/curated_genes.csv src/data/ncbi_validation_report.json
+
+Validation result for the example curated dataset:
+
+    Records checked: 5
+    Matched records: 5
+    Unmatched records: 0
+
+    thrL -> NCBI Gene 944742
+    thrA -> NCBI Gene 945803
+    thrB -> NCBI Gene 947498
+    thrC -> NCBI Gene 945198
+    yaaX -> NCBI Gene 944747
+
+The validation report is saved as:
+
+    src/data/ncbi_validation_report.json
+
+This demonstrates API-based biological data retrieval, organism-specific entity disambiguation using NCBI Taxonomy, structured record validation, and generation of machine-readable curation output.
 
 ## Tools and Technologies
 
