@@ -115,6 +115,46 @@ def validate_gff3(gff3_file):
     }
 
 
+def validate_sequence_ids(fasta_file, gff3_file):
+    """Check that GFF3 sequence IDs exist in the FASTA file."""
+    fasta_ids = set()
+
+    with open(fasta_file, "r") as file:
+        for line in file:
+            line = line.strip()
+
+            if line.startswith(">"):
+                sequence_id = line[1:].split()[0]
+                fasta_ids.add(sequence_id)
+
+    errors = []
+
+    with open(gff3_file, "r") as file:
+        for line_number, line in enumerate(file, start=1):
+            line = line.strip()
+
+            if not line or line.startswith("#"):
+                continue
+
+            parts = line.split("\t")
+
+            if len(parts) != 9:
+                continue
+
+            sequence_id = parts[0]
+
+            if sequence_id not in fasta_ids:
+                errors.append(
+                    f"Line {line_number}: sequence ID "
+                    f"'{sequence_id}' not found in FASTA"
+                )
+
+    return {
+        "is_valid": len(errors) == 0,
+        "errors": errors
+    }
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         results = parse_gff3(sys.argv[1])

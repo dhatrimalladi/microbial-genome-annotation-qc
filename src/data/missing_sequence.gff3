@@ -1,0 +1,2 @@
+##gff-version 3
+contig_missing	RefSeq	gene	1	20	.	+	.	ID=gene_missing

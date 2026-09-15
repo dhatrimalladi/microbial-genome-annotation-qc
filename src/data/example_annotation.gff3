@@ -1,5 +1,5 @@
 ##gff-version 3
-seq1	RefSeq	gene	1000	9000	.	+	.	ID=gene1
-seq1	RefSeq	CDS	1200	3000	.	+	0	ID=cds1;Parent=gene1
-seq1	RefSeq	CDS	3500	5000	.	+	0	ID=cds2;Parent=gene1
-seq1	RefSeq	gene	10000	15000	.	-	.	ID=gene2
+contig_1	RefSeq	gene	1	20	.	+	.	ID=gene1
+contig_1	RefSeq	CDS	3	15	.	+	0	ID=cds1;Parent=gene1
+contig_1	RefSeq	CDS	16	20	.	+	0	ID=cds2;Parent=gene1
+contig_2	RefSeq	gene	1	30	.	-	.	ID=gene2

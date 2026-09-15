@@ -1,4 +1,8 @@
-from src.gff3_qc import parse_gff3, validate_gff3
+from src.gff3_qc import (
+    parse_gff3,
+    validate_gff3,
+    validate_sequence_ids,
+)
 
 
 def test_parse_gff3():
@@ -36,3 +40,21 @@ def test_validate_missing_id():
     assert result["is_valid"] is False
     assert len(result["errors"]) == 1
     assert "missing feature ID" in result["errors"][0]
+def test_validate_sequence_ids():
+    result = validate_sequence_ids(
+        "src/data/example_genome.fasta",
+        "src/data/example_annotation.gff3",
+    )
+
+    assert result["is_valid"] is True
+    assert result["errors"] == []
+
+
+def test_validate_sequence_ids_missing_sequence():
+    result = validate_sequence_ids(
+        "src/data/example_genome.fasta",
+        "src/data/missing_sequence.gff3",
+    )
+
+    assert result["is_valid"] is False
+    assert "not found in FASTA" in result["errors"][0]
