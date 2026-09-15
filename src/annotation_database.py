@@ -6,13 +6,15 @@ def create_annotation_table(connection):
     connection.execute(
         """
         CREATE TABLE IF NOT EXISTS annotations (
-            feature_id TEXT PRIMARY KEY,
+            database_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            feature_id TEXT NOT NULL,
             feature_type TEXT NOT NULL,
             sequence_id TEXT NOT NULL,
             start INTEGER NOT NULL,
             end INTEGER NOT NULL,
             strand TEXT,
-            parent_id TEXT
+            parent_id TEXT,
+            gene_symbol TEXT
         )
         """
     )
@@ -56,6 +58,7 @@ def load_gff3_annotations(connection, gff3_file):
                 continue
 
             parent_id = attribute_dict.get("Parent")
+            gene_symbol = attribute_dict.get("gene")
 
             records.append(
                 (
@@ -66,21 +69,23 @@ def load_gff3_annotations(connection, gff3_file):
                     end,
                     strand,
                     parent_id,
+                    gene_symbol,
                 )
             )
 
     connection.executemany(
         """
-        INSERT OR REPLACE INTO annotations (
+        INSERT INTO annotations (
             feature_id,
             feature_type,
             sequence_id,
             start,
             end,
             strand,
-            parent_id
+            parent_id,
+            gene_symbol
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """,
         records,
     )

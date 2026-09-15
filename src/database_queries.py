@@ -86,6 +86,37 @@ def get_cds_for_gene(database_file, gene_symbol):
     return records
 
 
+def get_annotation_for_gene(database_file, gene_symbol):
+    """Return the gene annotation and CDS features for a gene symbol."""
+    connection = sqlite3.connect(database_file)
+
+    cursor = connection.execute(
+        """
+        SELECT
+            gene.gene_symbol,
+            gene.gene_id,
+            annotation.feature_id,
+            annotation.feature_type,
+            annotation.sequence_id,
+            annotation.start,
+            annotation.end,
+            annotation.strand
+        FROM genes AS gene
+        JOIN annotations AS annotation
+            ON annotation.gene_symbol = gene.gene_symbol
+        WHERE gene.gene_symbol = ?
+        ORDER BY annotation.start
+        """,
+        (gene_symbol,),
+    )
+
+    records = cursor.fetchall()
+
+    connection.close()
+
+    return records
+
+
 if __name__ == "__main__":
     database_file = "src/data/curated_genes.db"
 
