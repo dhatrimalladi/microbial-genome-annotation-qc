@@ -1,72 +1,136 @@
-# microbial-genome-annotation-qc
+# Microbial Genome Annotation QC
+
 Python-based quality control of bacterial genome FASTA sequences and GFF3 annotations.
-from pathlib import Path
+
+## Project Overview
+
+This project provides basic quality-control checks for microbial genome sequence and annotation files.
+
+It demonstrates practical skills in:
+
+* Python programming
+* FASTA parsing
+* GFF3 parsing
+* Biological sequence validation
+* Genome statistics
+* Annotation quality control
+* Error detection
+* Automated testing with pytest
+* Git and GitHub
+
+## Features
+
+### FASTA QC
+
+The FASTA QC module can:
+
+* Read FASTA files
+* Identify individual contigs
+* Calculate genome length
+* Calculate GC content
+* Validate DNA sequences
+* Identify invalid nucleotide characters
+
+### GFF3 QC
+
+The GFF3 QC module can:
+
+* Parse GFF3 annotation files
+* Count annotation features
+* Summarize feature types
+* Check that records contain 9 columns
+* Validate numeric start and end coordinates
+* Detect cases where start coordinates are greater than end coordinates
+* Detect duplicate feature IDs
+
+## Project Structure
+
+```text
+microbial-genome-annotation-qc/
+├── src/
+│   ├── data/
+│   │   ├── example_annotation.gff3
+│   │   ├── example_genome.fasta
+│   │   ├── invalid_annotation.gff3
+│   │   └── duplicate_ids.gff3
+│   ├── fasta_qc.py
+│   └── gff3_qc.py
+│
+├── tests/
+│   ├── test_fasta_qc.py
+│   └── test_gff3_qc.py
+│
+├── .gitignore
+└── README.md
+```
+
+## Installation
+
+Clone the repository and install pytest:
+
+```bash
+pip install pytest
+```
+
+## Running the Tests
+
+Run all automated tests with:
+
+```bash
+python -m pytest
+```
+
+Current test status:
+
+```text
+8 passed
+```
+
+## Example FASTA Statistics
+
+The example genome contains two contigs.
+
+The current implementation calculates:
+
+```text
+Number of contigs: 2
+Genome length: 87 bp
+GC content: 49.43%
+```
+
+## Example GFF3 Validation
+
+The project includes valid and intentionally invalid GFF3 files to test QC functionality.
+
+Examples of detected problems include:
+
+```text
+start coordinate is greater than end
+duplicate feature ID
+```
+
+This allows the project to demonstrate both successful validation and detection of problematic annotation records.
+
+## Why This Project?
+
+Genome annotation files are structured biological datasets that need quality checks before downstream analysis.
+
+This project demonstrates an approach to programmatically checking biological data for structural and content-related inconsistencies.
+
+The project is also designed as a practical learning exercise in biological data curation, validation, Python, testing, and reproducible data workflows.
+
+## Future Improvements
+
+Potential future extensions include:
+
+* More comprehensive GFF3 validation
+* Required attribute checks
+* Additional FASTA QC metrics
+* N50 calculation
+* CSV/JSON report generation
+* Command-line options
+* Integration with public biological databases
+* Larger real-world microbial genome datasets
 
 
-def read_fasta(fasta_file):
-    """Read a FASTA file and return sequences as a dictionary."""
-    sequences = {}
-    current_id = None
-    current_sequence = []
-
-    with open(fasta_file, "r") as file:
-        for line in file:
-            line = line.strip()
-
-            if not line:
-                continue
-
-            if line.startswith(">"):
-                if current_id is not None:
-                    sequences[current_id] = "".join(current_sequence)
-
-                current_id = line[1:].split()[0]
-                current_sequence = []
-            else:
-                current_sequence.append(line)
-
-        if current_id is not None:
-            sequences[current_id] = "".join(current_sequence)
-
-    return sequences
-
-
-def calculate_gc(sequence):
-    """Calculate GC percentage for a DNA sequence."""
-    sequence = sequence.upper()
-
-    gc_count = sequence.count("G") + sequence.count("C")
-
-    if len(sequence) == 0:
-        return 0.0
-
-    return (gc_count / len(sequence)) * 100
-
-
-def genome_statistics(fasta_file):
-    """Calculate basic statistics for a FASTA genome."""
-    sequences = read_fasta(fasta_file)
-
-    total_length = sum(len(seq) for seq in sequences.values())
-
-    if total_length == 0:
-        gc_content = 0.0
-    else:
-        total_gc = sum(
-            calculate_gc(seq) * len(seq) / 100
-            for seq in sequences.values()
-        )
-        gc_content = (total_gc / total_length) * 100
-
-    return {
-        "number_of_contigs": len(sequences),
-        "genome_length": total_length,
-        "gc_content": round(gc_content, 2),
-    }
-
-
-if __name__ == "__main__":
-    import sys
-    if len(sys.argv) > 1:
-        stats = genome_statistics(sys.argv[1])
-        print(stats)
+            
