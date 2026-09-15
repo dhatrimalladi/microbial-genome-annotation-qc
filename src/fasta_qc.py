@@ -1,4 +1,5 @@
 import sys
+import json
 
 
 def read_fasta(fasta_file):
@@ -89,11 +90,21 @@ def genome_statistics(fasta_file):
         "gc_content": round(gc_content, 2),
         "n50": n50,
     }
-
+def save_json_report(stats, output_file):
+    """Save genome statistics as a JSON report."""
+    with open(output_file, "w") as file:
+        json.dump(stats, file, indent=4)
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        stats = genome_statistics(sys.argv[1])
+        fasta_file = sys.argv[1]
+        stats = genome_statistics(fasta_file)
+
         print(stats)
+
+        if len(sys.argv) > 2:
+            output_file = sys.argv[2]
+            save_json_report(stats, output_file)
+            print(f"JSON report saved to {output_file}")
     else:
         print("Please provide a FASTA file path.")

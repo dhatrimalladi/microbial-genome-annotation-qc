@@ -1,5 +1,10 @@
-from src.fasta_qc import read_fasta, calculate_gc, genome_statistics, validate_sequence
-
+from src.fasta_qc import (
+    read_fasta,
+    calculate_gc,
+    genome_statistics,
+    validate_sequence,
+    save_json_report,
+)
 def test_read_fasta():
     sequences = read_fasta("src/data/example_genome.fasta")
 
@@ -29,3 +34,16 @@ def test_validate_sequence():
     invalid_result = validate_sequence("ATGCXYZ")
     assert invalid_result["is_valid"] is False
     assert invalid_result["invalid_bases"] == ["X", "Y", "Z"]
+def test_save_json_report(tmp_path):
+    stats = {
+        "number_of_contigs": 2,
+        "genome_length": 87,
+        "gc_content": 49.43,
+        "n50": 44,
+    }
+
+    output_file = tmp_path / "report.json"
+
+    save_json_report(stats, output_file)
+
+    assert output_file.exists()
