@@ -253,6 +253,34 @@ The project was tested against the NCBI RefSeq genome:
 
 The GFF3 validator handles biological annotation cases such as pseudogene-related duplicate IDs and CDS features with `exception=ribosomal slippage`.
 
+## NCBI Gene API Integration
+
+The project includes a Python module for retrieving structured gene information from the NCBI Gene database using the NCBI E-utilities API.
+
+The workflow:
+
+1. Search NCBI Gene using a gene symbol and organism.
+2. Retrieve multiple Gene records in a single ESummary request.
+3. Extract structured fields including NCBI Gene ID, gene symbol, gene description, organism, NCBI Taxonomy ID, chromosome accession, genomic coordinates, and gene summary.
+4. Filter candidate records using NCBI Taxonomy ID to resolve organism-specific matches.
+
+Example:
+
+    python -m src.ncbi_api thrA
+
+Example result:
+
+    Matching records for Taxonomy ID 511145:
+
+    Gene ID: 945803
+    Gene symbol: thrA
+    Organism: Escherichia coli str. K-12 substr. MG1655
+    Taxonomy ID: 511145
+    Chromosome accession: NC_000913.3
+    Coordinates: 336-2798
+
+This demonstrates API-based biological data retrieval, structured record handling, and entity disambiguation using a controlled taxonomy identifier.
+
 ## Tools and Technologies
 
 - Python
