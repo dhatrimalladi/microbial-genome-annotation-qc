@@ -3,3 +3,4 @@ __pycache__/
 genome_report.json
 real_data/
 *.save
+*.db
