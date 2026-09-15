@@ -22,3 +22,11 @@ def test_validate_invalid_gff3():
     assert result["is_valid"] is False
     assert len(result["errors"]) == 1
     assert "start coordinate is greater than end" in result["errors"][0]
+
+
+def test_validate_duplicate_ids():
+    result = validate_gff3("src/data/duplicate_ids.gff3")
+
+    assert result["is_valid"] is False
+    assert len(result["errors"]) == 1
+    assert "duplicate feature ID 'gene_1'" in result["errors"][0]
