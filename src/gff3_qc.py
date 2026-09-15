@@ -40,7 +40,6 @@ def validate_gff3(gff3_file):
 
             parts = line.split("\t")
 
-            # GFF3 records must contain 9 columns
             if len(parts) != 9:
                 errors.append(
                     f"Line {line_number}: expected 9 columns, found {len(parts)}"
@@ -51,7 +50,6 @@ def validate_gff3(gff3_file):
             end = parts[4]
             attributes = parts[8]
 
-            # Coordinates must be integers
             try:
                 start = int(start)
                 end = int(end)
@@ -61,14 +59,16 @@ def validate_gff3(gff3_file):
                 )
                 continue
 
-            # Start coordinate must not be greater than end
             if start > end:
                 errors.append(
                     f"Line {line_number}: start coordinate is greater than end"
                 )
 
-            # Check feature ID
-            if "ID=" in attributes:
+            if "ID=" not in attributes:
+                errors.append(
+                    f"Line {line_number}: missing feature ID"
+                )
+            else:
                 feature_id = attributes.split("ID=", 1)[1].split(";", 1)[0]
 
                 if feature_id in feature_ids:
@@ -77,46 +77,6 @@ def validate_gff3(gff3_file):
                     )
                 else:
                     feature_ids.add(feature_id)
-
-    return {
-        "is_valid": len(errors) == 0,
-        "errors": errors
-    }
-
-    with open(gff3_file, "r") as file:
-        for line_number, line in enumerate(file, start=1):
-            line = line.strip()
-
-            if not line or line.startswith("#"):
-                continue
-
-            parts = line.split("\t")
-
-            # GFF3 records must contain 9 columns
-            if len(parts) != 9:
-                errors.append(
-                    f"Line {line_number}: expected 9 columns, found {len(parts)}"
-                )
-                continue
-
-            start = parts[3]
-            end = parts[4]
-
-            # Coordinates must be integers
-            try:
-                start = int(start)
-                end = int(end)
-            except ValueError:
-                errors.append(
-                    f"Line {line_number}: start and end must be integers"
-                )
-                continue
-
-            # Start coordinate must not be greater than end
-            if start > end:
-                errors.append(
-                    f"Line {line_number}: start coordinate is greater than end"
-                )
 
     return {
         "is_valid": len(errors) == 0,

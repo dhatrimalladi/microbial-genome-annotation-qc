@@ -30,3 +30,9 @@ def test_validate_duplicate_ids():
     assert result["is_valid"] is False
     assert len(result["errors"]) == 1
     assert "duplicate feature ID 'gene_1'" in result["errors"][0]
+def test_validate_missing_id():
+    result = validate_gff3("src/data/missing_id.gff3")
+
+    assert result["is_valid"] is False
+    assert len(result["errors"]) == 1
+    assert "missing feature ID" in result["errors"][0]
