@@ -1,0 +1,6 @@
+gene_id,gene_symbol,product,feature_type,organism,evidence_source
+gene1,thrL,protein-coding gene,gene,Escherichia coli K-12 MG1655,NCBI RefSeq
+gene2,thrA,homoserine dehydrogenase,gene,Escherichia coli K-12 MG1655,NCBI RefSeq
+gene3,thrB,homoserine kinase,gene,Escherichia coli K-12 MG1655,NCBI RefSeq
+gene4,thrC,threonine synthase,gene,Escherichia coli K-12 MG1655,NCBI RefSeq
+gene5,yaaX,protein of unknown function,gene,Escherichia coli K-12 MG1655,NCBI RefSeq
