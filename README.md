@@ -176,6 +176,31 @@ Example output:
 
 An intentionally invalid dataset is also included for testing validation failures.
 
+### Gene Curation Report
+
+Curated genes can be cross-referenced with their corresponding NCBI annotation records stored in SQLite.
+
+Run:
+
+    python -m src.curation_report src/data/test_integrated.db thrA
+
+Example output:
+
+    Gene Curation Report
+    --------------------
+    Gene ID: gene2
+    Gene symbol: thrA
+    Product: homoserine dehydrogenase
+    Feature type: gene
+    Organism: Escherichia coli K-12 MG1655
+    Evidence source: NCBI RefSeq
+
+    NCBI Annotation Records:
+    CDS cds-NP_414543.1 NC_000913.3 337 2799 +
+    gene gene-b0002 NC_000913.3 337 2799 +
+
+This demonstrates cross-referencing a curated gene record with its corresponding NCBI RefSeq gene and CDS annotations.
+
 ## SQLite Database
 
 Curated gene records can be loaded into a SQLite database.
@@ -413,3 +438,4 @@ This demonstrates API-based biological data retrieval, organism-specific entity 
 - Integration with public biological databases and APIs
 - More advanced biological entity normalization
 - Larger real-world curated datasets
+
