@@ -1,51 +1,79 @@
-# Microbial Genome Annotation QC
+Microbial Genome Annotation QC
 
-Python-based quality control of bacterial genome FASTA sequences and GFF3 annotations.
+A Python-based quality control toolkit for bacterial genome FASTA sequences and GFF3 annotations.
 
-## Project Overview
+This project demonstrates practical skills in bioinformatics data validation, genome assembly QC, structured biological data processing, automated testing, and reproducible workflows.
 
-This project provides basic quality-control checks for microbial genome sequence and annotation files.
+Project Overview
 
-It demonstrates practical skills in:
+The toolkit performs basic quality control on microbial genome sequence and annotation files.
 
-* Python programming
-* FASTA parsing
-* GFF3 parsing
-* Biological sequence validation
-* Genome statistics
-* Annotation quality control
-* Error detection
-* Automated testing with pytest
-* Git and GitHub
+It currently supports:
 
-## Features
+FASTA sequence parsing
+DNA sequence validation
+Genome length calculation
+GC content calculation
+N50 assembly statistic
+GFF3 feature parsing
+GFF3 structure validation
+Coordinate validation
+Duplicate feature ID detection
+Automated unit testing with pytest
+FASTA Quality Control
 
-### FASTA QC
+The FASTA QC module (src/fasta_qc.py) provides:
 
-The FASTA QC module can:
+Sequence Parsing
 
-* Read FASTA files
-* Identify individual contigs
-* Calculate genome length
-* Calculate GC content
-* Validate DNA sequences
-* Identify invalid nucleotide characters
+Reads FASTA files and stores sequences by contig identifier.
 
-### GFF3 QC
+Sequence Validation
 
-The GFF3 QC module can:
+Checks whether DNA sequences contain only valid nucleotide characters:
 
-* Parse GFF3 annotation files
-* Count annotation features
-* Summarize feature types
-* Check that records contain 9 columns
-* Validate numeric start and end coordinates
-* Detect cases where start coordinates are greater than end coordinates
-* Detect duplicate feature IDs
+A, T, G, C
 
-## Project Structure
+Invalid characters are reported for further review.
 
-```text
+Genome Statistics
+
+The toolkit calculates:
+
+Number of contigs
+Total genome length
+GC content
+N50
+
+For the example genome:
+
+Number of contigs: 2
+Genome length: 87 bp
+GC content: 49.43%
+N50: 44 bp
+GFF3 Quality Control
+
+The GFF3 QC module (src/gff3_qc.py) provides:
+
+Feature Parsing
+
+Counts annotated feature types such as:
+
+gene
+CDS
+Structure Validation
+
+Checks that GFF3 records contain the required 9 columns.
+
+Coordinate Validation
+
+Checks that feature start coordinates do not occur after end coordinates.
+
+Feature ID Validation
+
+Detects duplicate feature IDs within the annotation file.
+
+Project Structure
 microbial-genome-annotation-qc/
 ├── src/
 │   ├── data/
@@ -53,84 +81,69 @@ microbial-genome-annotation-qc/
 │   │   ├── example_genome.fasta
 │   │   ├── invalid_annotation.gff3
 │   │   └── duplicate_ids.gff3
+│   ├── __init__.py
 │   ├── fasta_qc.py
 │   └── gff3_qc.py
-│
 ├── tests/
 │   ├── test_fasta_qc.py
 │   └── test_gff3_qc.py
-│
 ├── .gitignore
 └── README.md
-```
+Installation
 
-## Installation
+Clone the repository:
 
-Clone the repository and install pytest:
+git clone https://github.com/dhatrimalladi/microbial-genome-annotation-qc.git
+cd microbial-genome-annotation-qc
 
-```bash
+Install pytest:
+
 pip install pytest
-```
+Running the Tests
 
-## Running the Tests
+Run the complete test suite:
 
-Run all automated tests with:
-
-```bash
 python -m pytest
-```
 
 Current test status:
 
-```text
 8 passed
-```
 
-## Example FASTA Statistics
+The tests cover FASTA parsing, sequence validation, genome statistics, GFF3 parsing, coordinate validation, and duplicate feature ID detection.
 
-The example genome contains two contigs.
+Running the Tools
+FASTA QC
+python src/fasta_qc.py src/data/example_genome.fasta
+GFF3 QC
+python src/gff3_qc.py src/data/example_annotation.gff3
 
-The current implementation calculates:
+The repository also includes intentionally invalid GFF3 files used to test validation logic.
 
-```text
-Number of contigs: 2
-Genome length: 87 bp
-GC content: 49.43%
-```
+Why This Project?
 
-## Example GFF3 Validation
+This project was developed to build practical experience with biological data quality control and structured annotation data.
 
-The project includes valid and intentionally invalid GFF3 files to test QC functionality.
+It combines:
 
-Examples of detected problems include:
+Biology and microbiology knowledge
+Python programming
+Data validation
+Scientific data processing
+Automated testing
+Git and GitHub
+Reproducible analysis workflows
 
-```text
-start coordinate is greater than end
-duplicate feature ID
-```
+The goal is to demonstrate how biological datasets can be parsed, validated, tested, and prepared for downstream analysis.
 
-This allows the project to demonstrate both successful validation and detection of problematic annotation records.
+Future Improvements
 
-## Why This Project?
+Planned improvements include:
 
-Genome annotation files are structured biological datasets that need quality checks before downstream analysis.
-
-This project demonstrates an approach to programmatically checking biological data for structural and content-related inconsistencies.
-
-The project is also designed as a practical learning exercise in biological data curation, validation, Python, testing, and reproducible data workflows.
-
-## Future Improvements
-
-Potential future extensions include:
-
-* More comprehensive GFF3 validation
-* Required attribute checks
-* Additional FASTA QC metrics
-* N50 calculation
-* CSV/JSON report generation
-* Command-line options
-* Integration with public biological databases
-* Larger real-world microbial genome datasets
-
-
-            
+More comprehensive GFF3 validation
+Required attribute checks
+Additional FASTA QC metrics
+CSV/JSON report generation
+Command-line options
+Integration with public biological databases
+Processing larger real-world microbial genome datasets
+Expanded automated test coverage
