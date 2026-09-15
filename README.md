@@ -1,8 +1,59 @@
 # Microbial Genome Annotation QC
 
-A Python-based quality control and structured data curation workflow for bacterial genome FASTA sequences, GFF3 annotations, curated gene records, and SQLite databases.
+A Python-based **bioinformatics data curation and quality-control workflow** for bacterial genome sequences, genome annotations, curated gene records, and scientific database integration.
 
-This project demonstrates practical bioinformatics data validation using Python, automated testing, SQL, and real NCBI RefSeq genomic data.
+The project demonstrates how biological data can be:
+
+- parsed and validated for structural and biological consistency
+- transformed into structured, machine-readable records
+- stored and queried using SQL
+- cross-validated against the NCBI Gene database
+- tested automatically to improve data reliability and reproducibility
+
+The workflow uses **real NCBI RefSeq data** from *Escherichia coli* K-12 MG1655 and combines Python, SQLite, SQL, APIs, JSON/CSV data handling, and automated testing.
+
+## Why This Project Matters
+
+Biological databases and AI-driven scientific applications depend on accurate, consistent, and traceable structured data.
+
+This project simulates a practical data-curation workflow in which genomic annotations and curated gene records are checked before being used for downstream analysis or database applications.
+
+The workflow covers:
+
+    Biological data
+          |
+          v
+    FASTA / GFF3 / CSV
+          |
+          v
+    Quality Control
+          |
+          v
+    Structured Curation
+          |
+          v
+    SQLite Database
+          |
+          v
+    NCBI Gene API Validation
+          |
+          v
+    Machine-readable JSON Report
+
+## Key Skills Demonstrated
+
+- Python programming for biological data processing
+- FASTA and GFF3 parsing and validation
+- Biological annotation quality control
+- Structured gene data curation
+- Data consistency and duplicate detection
+- SQLite database design and SQL queries
+- REST-style API interaction with NCBI E-utilities
+- NCBI Taxonomy-based record disambiguation
+- JSON and CSV data handling
+- Automated testing with pytest
+- Git and GitHub version-controlled development
+- Reproducible command-line workflows
 
 ## Project Overview
 
@@ -31,8 +82,11 @@ The workflow includes:
 - Loading GFF3 annotations into SQLite
 - SQL-based biological data retrieval
 - Gene/CDS parent-child relationship queries
+- NCBI Gene API retrieval
+- Taxonomy-based organism filtering
+- Curated gene validation against NCBI Gene
+- Machine-readable JSON validation reporting
 - Combined command-line QC workflow
-- JSON QC reporting
 - Automated testing with pytest
 
 ## Project Structure
@@ -44,20 +98,25 @@ The workflow includes:
     │   │   ├── example_genome.fasta
     │   │   ├── curated_genes.csv
     │   │   ├── invalid_curated_genes.csv
-    │   │   └── missing_sequence.gff3
+    │   │   ├── missing_sequence.gff3
+    │   │   └── ncbi_validation_report.json
     │   ├── fasta_qc.py
     │   ├── gff3_qc.py
     │   ├── run_qc.py
     │   ├── curation_qc.py
     │   ├── database.py
     │   ├── database_queries.py
-    │   └── annotation_database.py
+    │   ├── annotation_database.py
+    │   ├── ncbi_api.py
+    │   └── ncbi_curation.py
     ├── tests/
     │   ├── test_fasta_qc.py
     │   ├── test_gff3_qc.py
     │   ├── test_run_qc.py
     │   ├── test_curation_qc.py
-    │   └── test_database_queries.py
+    │   ├── test_database_queries.py
+    │   ├── test_ncbi_api.py
+    │   └── test_ncbi_curation.py
     ├── .gitignore
     └── README.md
 
